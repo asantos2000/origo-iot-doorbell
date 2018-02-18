@@ -1,0 +1,61 @@
+author: mongoose-os
+description: A doorbell Mongoose OS firmware for C/C++
+version: 1.0
+
+libs_version: ${mos.version}
+modules_version: ${mos.version}
+mongoose_os_version: ${mos.version}
+
+platform: esp32
+
+tags:
+  - c
+
+sources:
+  - src
+
+filesystem:
+  - fs
+
+config_schema:
+  - ["mqtt.server", "iot.eclipse.org:1883"]
+  - ["mqtt.enable", true]
+  - ["wifi.sta.enable", true]
+  - ["wifi.ap.enable", false]
+  - ["wifi.sta.ssid", "tiberio-base-wifi"]
+  - ["wifi.sta.pass", "dias291611"]
+  - ["topic", "o", {"title": "Topics used by ring the bell"}]
+  - ["topic.event", "s", "/devices/esp8266_D6F626/events", {"title": "Topic where event (ie. button push) will be published"}]
+  - ["topic.config", "s", "/devices/esp8266_D6F626/config", {"title": "Topic where runtime configuration will be received"}]
+  - ["dns_sd.enable", true]
+  - ["dns_sd.host_name", "mOS_esp32_8016DC"]
+  - ["dns_sd.txt", ""] 
+  - ["dns_sd.ttl", 120]
+  #- ["wifi.sta.ssid", "AndroidAS"]
+  #- ["wifi.sta.pass", "90490000"]
+  # devID := fmt.Sprintf("%s_%s", devArch, devMAC[6:])
+  
+#config_schema:
+##pins setup
+#  - ["pins", "o", {title: "Pins layout"}]
+#  - ["pins.led", "i", -1, {title: "LED GPIO pin"}]
+#
+#conds:
+#  - when: mos.platform == "esp32"
+#    apply:
+#      config_schema:
+#        - ["pins.led", 4]
+#
+#  - when: mos.platform == "esp8266"
+#    apply:
+#      config_schema:
+#        - ["pins.led", 2]
+
+build_vars:
+  MGOS_ENABLE_DNS_SD: 1
+
+libs:
+  - origin: https://github.com/mongoose-os-libs/demo-bundle
+
+# Used by the mos tool to catch mos binaries incompatible with this file format
+manifest_version: 2017-05-18
